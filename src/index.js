@@ -20,7 +20,7 @@ dispatcher.onGet("/", function(req, res) {
   //create a server object:
   var db = new sqlite3.Database("database.db");
   db.serialize(function() {
-    db.all("SELECT rowid AS id, info FROM lorem", function(err, rows) {
+    db.all("SELECT *  FROM user", function(err, rows) {
       res.write(JSON.stringify(rows));
       res.end();
     });
