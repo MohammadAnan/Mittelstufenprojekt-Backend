@@ -18,9 +18,9 @@ dispatcher.setStaticDirname("static");
 
 dispatcher.onGet("/", function(req, res) {
   //create a server object:
-  var db = new sqlite3.Database("database.db");
+  var db = new sqlite3.Database("sqlite.db");
   db.serialize(function() {
-    db.all("SELECT *  FROM user", function(err, rows) {
+    db.all("SELECT * FROM user", function(err, rows) {
       res.write(JSON.stringify(rows));
       res.end();
     });
