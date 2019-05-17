@@ -1,24 +1,40 @@
 var http = require("http");
 
 var sqlite3 = require("sqlite3").verbose();
-var dispatcher = require("httpdispatcher");
 
-//create a server object:
+var HttpDispatcher = require("httpdispatcher");
+var http = require("http");
+var dispatcher = new HttpDispatcher(); //add routing support
+
 http
   .createServer(function(req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
-
-    var db = new sqlite3.Database("database.db");
-    db.serialize(function() {
-      db.all("SELECT rowid AS id, info FROM lorem", function(err, rows) {
-        res.write(JSON.stringify(rows));
-        res.end();
-      });
-    });
-
-    db.close();
+    dispatcher.dispatch(req, res);
   })
-  .listen(8080); //the server object listens on port 8080
+  .listen(8080);
+
+dispatcher.setStatic("/resources");
+dispatcher.setStaticDirname("static");
+
+dispatcher.onGet("/", function(req, res) {
+  //create a server object:
+  var db = new sqlite3.Database("database.db");
+  db.serialize(function() {
+    db.all("SELECT rowid AS id, info FROM lorem", function(err, rows) {
+      res.write(JSON.stringify(rows));
+      res.end();
+    });
+  });
+
+  db.close();
+});
+
+dispatcher.onGet("/route", function(req, res) {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Routing is working successfully !");
+});
+
+//the server object listens on port 8080
 
 // define the port of access for your server
 /*const PORT = 8080;
