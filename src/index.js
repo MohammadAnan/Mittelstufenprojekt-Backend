@@ -131,7 +131,9 @@ app.post("/run", function(req, res) {
     // req.body.sql contains the SQL query from the frontend
     db.run(req.body.sql, function(err) {
       if (err != null) {
-        res.end(); // TODO return an appropriate HTTP error code
+        console.error(err.stack);
+        res.status(500).send("Something broke!");
+        res.end();
         return;
       }
       res.end();
@@ -151,7 +153,9 @@ app.post("/all", function(req, res) {
     // req.body.sql contains the SQL query from the frontend
     db.all(req.body.sql, function(err, rows) {
       if (err != null) {
-        res.end(); // TODO return an appropriate HTTP error code
+        console.error(err.stack);
+        res.status(500).send("Something broke!");
+        res.end();
         return;
       }
       res.write(JSON.stringify(rows));
