@@ -12,7 +12,7 @@ app.get("/", (req, res) => res.send("Hello World!"));
 app.post("/test-page", function(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.send(req.body.test);
-});
+}); //
 
 // we need two routes (/run and /all), because some queries return results (SELECT) and others don't (CREATE, UPDATE, INSERT)
 
